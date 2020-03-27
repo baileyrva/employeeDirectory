@@ -1,26 +1,72 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import UserList from "./components/UserList";
+import Title from "./components/Title";
+import Search from "./components/Search";
+import API from "./utils/API";
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = {
+    result: [],
+    search: ""
+  };
+
+  componentDidMount() {
+    API.randomuser()
+      .then(res => this.setState({ result: res.data.results }))
+      .catch(err => console.log(err));
+  }
+  //logging errors, creating array, and updating state
+  handleInputChange = event => {
+    const value = event.target.value;
+    const name = event.target.name;
+    this.setState({
+      [name]: value
+    });
+
+    let newResult = this.state.result.filter(employee => {
+      return (
+        employee.name.first.toLowerCase().indexOf(value) > -1 ||
+        employee.name.last.toLowerCase().indexOf(value) > -1
+      );
+    });
+    this.setState({
+      result: newResult
+    });
+    if (value.length === 0) {
+      API.randomuser()
+        .then(res => this.setState({ result: res.data.results }))
+        .catch(err => console.log(err));
+    }
+  };
+
+  render() {
+    return (
+      <div className="container">
+        <Title />
+        <div className="flex">
+          <div className="formbox">
+            <Search
+              value={this.state.search}
+              handleInputChange={this.handleInputChange}
+            />
+          </div>
+          <div className="listbox">
+            {this.state.result.map((element, index) => (
+              <UserList
+                key={index}
+                name={element.name.first + " " + element.name.last}
+                picture={element.picture.medium}
+                city={element.location.city}
+                email={element.email}
+                state={element.location.state}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
-export default App;
+export default App; 
