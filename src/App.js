@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import "./App.css";
+import "./styles/App";
 import Navbar from "./components/Navbar";
 import Table from "./components/Table";
 // where I learned about context https://www.youtube.com/watch?v=lhMKvyLRWo0
