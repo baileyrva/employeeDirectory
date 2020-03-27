@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Button";
+import "./Button.css";
 
 function Button({ children }) {
   return <button className="Button">{children}</button>;

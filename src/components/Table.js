@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useGet } from "../utils/API";
-import "../styles/Table";
+import "./Table.css";
 import Button from "./Button.js";
 import { EmployeeContext } from "./EmployeeContext.js";
 
@@ -22,7 +22,6 @@ function Table() {
             <Button>First Name</Button>
           </td>
           <td>Last Name</td>
-          <td>UID</td>
           <td>Gender</td>
           <td>E-mail</td>
           <td onClick={() => sortFunc("age")}>
@@ -36,7 +35,6 @@ function Table() {
             <tr key={employee.login.uuid}>
               <td>{employee.name.first}</td>
               <td>{employee.name.last}</td>
-              <td>{employee.login.uuid}</td>
               <td>{employee.gender}</td>
               <td>{employee.email}</td>
               <td>{employee.dob.age}</td>

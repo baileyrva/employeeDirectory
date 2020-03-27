@@ -1,6 +1,6 @@
 import React from "react";
 import Search from "../components/Search";
-import "../styles/Navbar";
+import "./Navbar.css";
 
 function Navbar() {
   // used as the navbar for the site.
