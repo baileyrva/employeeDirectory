@@ -10,7 +10,6 @@ export function useGet(url) {
     setDisplayedEmployees
   } = useContext(EmployeeContext);
 
- 
   // gets employees from an api, stores them in both employees, and displayed employees. Only occurs once when component is mounted.
   useEffect(() => {
     async function getEmployees() {
@@ -25,6 +24,8 @@ export function useGet(url) {
       }
     }
     getEmployees();
+    //line below ignores empty array error
+    // eslint-disable-next-line
   }, []);
 
   // used to decide which sort function to trigger
@@ -50,7 +51,6 @@ export function useGet(url) {
         return 1;
       }
     });
-    // You have to spread, because this creates a new variable, instead of just updating the variable. React will not recognize it as an update if you just update the variable.
     setDisplayedEmployees([...employees]);
   }
 
