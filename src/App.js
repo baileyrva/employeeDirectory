@@ -1,72 +1,30 @@
-import React, { Component } from "react";
-import UserList from "./components/UserList";
-import Title from "./components/Title";
-import Search from "./components/Search";
-import API from "./utils/API";
-import './App.css'
+import React, { useState } from "react";
 
-class App extends Component {
-  state = {
-    result: [],
-    search: ""
-  };
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Table from "./components/Table";
+// where I learned about context https://www.youtube.com/watch?v=lhMKvyLRWo0
+import { EmployeeContext } from "./components/EmployeeContext";
 
-  componentDidMount() {
-    API.randomuser()
-      .then(res => this.setState({ result: res.data.results }))
-      .catch(err => console.log(err));
-  }
-  //logging errors, creating array, and updating state
-  handleInputChange = event => {
-    const value = event.target.value;
-    const name = event.target.name;
-    this.setState({
-      [name]: value
-    });
+function App() {
+  const [employees, setEmployees] = useState([]);
+  const [displayedEmployees, setDisplayedEmployees] = useState([]);
 
-    let newResult = this.state.result.filter(employee => {
-      return (
-        employee.name.first.toLowerCase().indexOf(value) > -1 ||
-        employee.name.last.toLowerCase().indexOf(value) > -1
-      );
-    });
-    this.setState({
-      result: newResult
-    });
-    if (value.length === 0) {
-      API.randomuser()
-        .then(res => this.setState({ result: res.data.results }))
-        .catch(err => console.log(err));
-    }
-  };
-
-  render() {
-    return (
-      <div className="container">
-        <Title />
-        <div className="flex">
-          <div className="formbox">
-            <Search
-              value={this.state.search}
-              handleInputChange={this.handleInputChange}
-            />
-          </div>
-          <div className="listbox">
-            {this.state.result.map((element, index) => (
-              <UserList
-                key={index}
-                name={element.name.first + " " + element.name.last}
-                picture={element.picture.medium}
-                city={element.location.city}
-                email={element.email}
-                state={element.location.state}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <EmployeeContext.Provider
+        value={{
+          employees,
+          setEmployees,
+          displayedEmployees,
+          setDisplayedEmployees
+        }}
+      >
+        <Navbar />
+        <Table />
+      </EmployeeContext.Provider>
+    </div>
+  );
 }
 
-export default App; 
+export default App;
